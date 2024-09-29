@@ -12,13 +12,13 @@ public class MovingPlatform : MonoBehaviour
     private Transform _targetWaypoint;
     private int _currentWaypointIndex = 0;
 
-    // Start is called before the first frame update
+    // Set intial waypoint to first in array
     void Start()
     {
         _targetWaypoint = _waypoints[0];
     }
 
-    // Update is called once per frame
+    // Platform uses MoveTowards fucntion to move towards currently targetted waypoint.
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, _targetWaypoint.position, _speed * Time.deltaTime);
@@ -29,6 +29,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
+    // This function is called when platform has reached a waypoint. It iterates to the next waypoint in the array. If the platform has hit the last waypoint, it goes back to the first waypoint in the array.
     private Transform GetNextWaypoint()
     {
         _currentWaypointIndex++;
@@ -40,6 +41,7 @@ public class MovingPlatform : MonoBehaviour
         return _waypoints[_currentWaypointIndex];
     }
 
+    // While the player is colliding with the platform, it is a transform child of the platform. This keeps the player on the platform while it moves.
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject == Player)
@@ -48,6 +50,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
+    // When the player leaves the platform, it becomes independent of the platform.
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == Player)
